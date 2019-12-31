@@ -106,7 +106,6 @@ function draw_Ratings()
 icon_Pause("icn_P_Pause");
 icon_Play("icn_P_Play");
 icon_Skip("icn_P_Skip");
-icon_Reset("icn_P_Err");
 
 draw_Ratings();
 
