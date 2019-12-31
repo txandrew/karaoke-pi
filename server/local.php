@@ -13,9 +13,29 @@
             shell_exec("/var/www/html/karaoke/server/karaoke-pi.py >> /dev/null &");
             header("Location: local.php"); 
             break;
+
+
         case "stop":
             $conn->query("UPDATE tbl_status SET status='QUIT';");
             header("Location: local.php"); 
+            break;
+
+
+        case "auto":
+            $str_sql = "select autoplay from tbl_status";
+            $qry_queue_sz = $conn->query($str_sql);
+            $row = $qry_queue_sz->fetch_assoc();
+            $str_c_autoplay = $row["autoplay"];
+
+            if ($str_c_autoplay == 'Y')
+            {
+                $conn->query("UPDATE tbl_status SET autoplay='N';");
+            }
+            else
+            {
+                $conn->query("UPDATE tbl_status SET autoplay='Y';");
+            }
+            header("Location: local.php");
             break;
         }
     }
@@ -40,7 +60,8 @@ $str_sql = "
         s.artist,
         s.genre,
         s.song_type,
-        u.color
+        u.color,
+        c.autoplay
     from tbl_status         c
     left join tbl_songs     s on c.youtube_id = s.youtube_id
     left join tbl_users     u on u.user_id    = c.queued_by;";
@@ -93,7 +114,13 @@ function sendCmd(str_Command)
 <button onclick="location.assign('local.php?CMD=start')" style="width:48%;font-size:2em;">On</button>
 <button onclick="location.assign('local.php?CMD=stop')" style="width:48%;font-size:2em;">Off</button>
 <hr>
-<button onclick="location.assign('/')" style="font-size:2.5em;">Home</button>
+<button onclick="location.assign('local.php?CMD=auto')" style="width:48%;font-size:2em;<?php
+if ( $row["autoplay"] == "Y" )
+{
+    echo "background-color:#4CAF50;color:black;"; 
+}
+?>">AP</button>
+<button onclick="location.assign('/')" style="width:48%;font-size:2em;">Home</button>
 <h3><?php echo $str_wireless; ?> @ <?php echo $str_self; ?></h3>
 <hr />
 <h3><?php echo $row["status"]; ?></h3>

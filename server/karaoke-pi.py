@@ -186,33 +186,42 @@ while bool_run:
     bool_FailLoad = False
 
     cur = db.cursor()
-    cur.execute("select c.status, c.youtube_id from tbl_status c left join tbl_songs s on c.youtube_id = s.youtube_id")
+    cur.execute("select c.status, c.youtube_id, c.autoplay from tbl_status c left join tbl_songs s on c.youtube_id = s.youtube_id")
 
     res  = cur.fetchone()
 
     str_n_status  = res[0]
     str_n_youtube = res[1]
+    str_c_autoplay = res[2]
 
+
+    # STARTS A SONG
     if str_n_status == "PLAYED" and str_c_status != "PAUSED":
         str_function += "[PLAY : " + resetVideo() + "]"
         cur.execute("UPDATE tbl_status SET status='PLAYING';")
 
+    # RESUMES A PAUSED SONG
     if str_n_status == "PLAYED" and str_c_status == "PAUSED":
         str_function += "[RESUME : " + str(obj_Player.play()) + "]"
         cur.execute("UPDATE tbl_status SET status='PLAYING';")
 
+    # DO I NEED THIS?
     if str_n_status == "PLAYED" and str_n_youtube == "-1" and str_c_status != "PAUSED":
         str_function += "[NO VIDEO : " + setNextSong() + "]"
 
+    # DO I NEED THIS
     if str_c_status == "STARTING" and str_n_status == "PLAYING":
         str_function += "[STARTING : " + setNextSong() + "]"
 
+    # DO I NEED THIS
     if str_c_status == "STARTING" and str_n_youtube == "-1":
         str_function += "[STARTING : " + setNextSong() + "]"
 
+    # IF IN STANDBY MODE
     if str_n_status == "STANDBY":
         str_function += "[STANDBY : " + setNextSong() + "]"
 
+    # IF THE STATUS IS CHANGING
     if ( str_c_status != str_n_status ):
         if ( str_n_status == "PAUSED" ):
             try:
@@ -229,11 +238,20 @@ while bool_run:
             str_function += "[SKIP : " + setNextSong() + "]"
     time.sleep(1)
 
+    # WHAT HAPPENS WHEN KARAOKE-PI DETECTS END OF SONG
     if ( str_n_status == "PLAYING" ):
         time.sleep(1)
-        if ( not isPlaying() ):  # str(obj_Player.position()) == "None" ):
+        if ( not isPlaying() ):
             str_function += "[ENDED : " + setNextSong() + "]"
 
+    if (str_c_autoplay == "Y" and str_n_youtube != "-1" and str_n_status == "READY"):
+        playVideo("~LOADING")
+        time.sleep(10)
+        cur.execute("UPDATE tbl_status SET status='PLAYED';")
+        str_n_status = "PLAYED"
+
+
+    # PRINT WHAT HAPPENS
     if bool_verbose == 1:
         print           ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
     fil_log.write   ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
@@ -249,11 +267,12 @@ while bool_run:
             str_n_quit = "QUIT"
 
 
-    #if ( not bool_FailLoad ):
+    #SETUP FOR NEXT LOOP
     str_c_status  = str_n_status
     str_p_youtube = str_c_youtube
     str_c_youtube = str_n_youtube
 
+    #DETECT IF DATABASE SAYS TO QUIT
     if ( str_n_status == "QUIT" ):
         try:
             if obj_Player.can_quit():
