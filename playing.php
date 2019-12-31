@@ -88,7 +88,7 @@ function draw_Ratings()
 <h1><?php echo $row["status"]; ?></h1>
 <div style="text-align:center">
 <button onclick="sendCmd('PAUSED');" style="width:22%"><canvas width=50px height=50px id="icn_P_Pause">Pause</canvas></button>
-<button onclick="sendCmd('PLAYING');"  style="width:22%"><canvas width=50px height=50px id="icn_P_Play">Play</canvas></button>
+<button onclick="sendCmd('PLAYED');"  style="width:22%"><canvas width=50px height=50px id="icn_P_Play">Play</canvas></button>
 <button onclick="sendCmd('SKIPPING');"  style="width:22%"><canvas width=50px height=50px id="icn_P_Skip">Skip</canvas></button>
 </div>
 <h2>
