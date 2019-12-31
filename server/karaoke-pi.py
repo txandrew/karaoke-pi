@@ -3,6 +3,7 @@
 from omxplayer import OMXPlayer
 from datetime import datetime
 import os
+import sys
 import MySQLdb
 import time
 import socket
@@ -25,6 +26,11 @@ db = MySQLdb.connect(host="localhost",
                       passwd="karaokepi",
                       db="karaoke")
 db.autocommit(True)
+
+bool_verbose = 0
+for str_param in sys.argv:
+    if str_param == '-v':
+        bool_verbose = 1
 
 
 bool_run = True
@@ -232,7 +238,8 @@ while bool_run:
         if ( not isPlaying() ):  # str(obj_Player.position()) == "None" ):
             str_function += "[ENDED : " + setNextSong() + "]"
 
-#    print           ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
+if bool_verbose = 1:
+    print           ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
     fil_log.write   ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
     try:
         fil_log.write (" % " + str(obj_Player.playback_status()) + "\n")
