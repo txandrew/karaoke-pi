@@ -5,6 +5,8 @@ $conn = new mysqli("localhost","kpi-server","karaokepi","karaoke");
 
 if ( isset($_POST["youtube_url"]) )
 {
+    echo "<h2 id='fetchFMT'>Getting Available Formats</h2>";
+
     $youtube_id = youtube_id_from_url($_POST["youtube_url"]);
     if ( ! $youtube_id )
     {
@@ -42,6 +44,7 @@ if ( isset($_POST["youtube_url"]) )
             }
         }
     }
+    echo "<script>document.getElementById('fetchFMT').style.display = 'none'</script>";
 }
 elseif ( isset($_SESSION["youtube_id"] ) )
 {
