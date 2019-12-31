@@ -106,14 +106,14 @@ function sendCmd(str_Command)
     {
     case "READY":
         echo "<h2 style='color:white;'>Up Next...</h2><hr>";
-        echo "<h1 style='color:" . $row["color"] . "' >" . $row["queued_by"] . "</h1><hr />";
+        echo "<h1 style='color:" . $row["color"] . ";text-shadow: -1px 0 1 white, 0 1px 1 white, 1px 0 1 white, 0 -1px 1 white;' >" . $row["queued_by"] . "</h1><hr />";
         echo "<h2>" . $row["title"] . " by " . $row["artist"] . "<h2>";
         break;
     case "PLAYING": case "PLAYED":
-        echo "<h1 style='color:" . $row["color"] . "' >" . $row["queued_by"] . "</h1><hr />";
+        echo "<h1 style='color:" . $row["color"] . ";text-shadow: -2px 0 3px white, 0 2px 3px white, 2px 0 3px white, 0 -2px 3px white;' >" . $row["queued_by"] . "</h1><hr />";
         echo "<h2>" . $row["title"] . " by " . $row["artist"] . "<h2>";
         echo "<hr>";
-        echo "<h2>Songs in Queue: " . $int_queue_sz . "</h2>";
+        echo "<h2 style='font-size:3em'>Queue: " . $int_queue_sz . "</h2>";
         break;
     case "QUIT":
         echo "<h1>Karaoke-Pi</h1><hr /><h2>Offline</h2>";

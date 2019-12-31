@@ -36,6 +36,15 @@ for str_param in sys.argv:
 bool_run = True
 obj_Player = None
 
+nxt_cur = db.cursor()
+nxt_cur.execute("UPDATE tbl_status SET status='STARTING', youtube_id='-1';")
+str_p_youtube = "STARTING"
+str_c_video   = "~LOADING"
+str_c_status  = "STARTING"
+str_c_youtube = "STARTING"
+str_n_status  = ""
+str_n_youtube = ""
+
 ###############################################################################
 # Initiate Player
 ###############################################################################
@@ -59,14 +68,6 @@ def initPlayer():
 
 #    obj_Player.play()
 
-    nxt_cur = db.cursor()
-    nxt_cur.execute("UPDATE tbl_status SET status='STARTING', youtube_id='-1';")
-    str_p_youtube = "STARTING"
-    str_c_video   = "~LOADING"
-    str_c_status  = "STARTING"
-    str_c_youtube = "STARTING"
-    str_n_status  = ""
-    str_n_youtube = ""
 
     bool_run      = True
 
@@ -120,11 +121,6 @@ def setNextSong():
 
         str_n_status  = "READY"
         str_n_youtube = nxt_ytid
-
-
-#        playVideo("~LOADING")
-#        time.sleep(10)
-#        playVideo(nxt_ytid)
 
         return "READY"
     else:
@@ -238,8 +234,8 @@ while bool_run:
         if ( not isPlaying() ):  # str(obj_Player.position()) == "None" ):
             str_function += "[ENDED : " + setNextSong() + "]"
 
-if bool_verbose = 1:
-    print           ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
+    if bool_verbose == 1:
+        print           ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
     fil_log.write   ("%10s --> %10s  # %14s --> %14s / %s" % (str_c_status, str_n_status, str_c_youtube, str_n_youtube, str_function))
     try:
         fil_log.write (" % " + str(obj_Player.playback_status()) + "\n")

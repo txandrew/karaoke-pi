@@ -8,7 +8,16 @@ if ( isset($_POST["youtube_url"]) )
     echo "<h2 id='fetchFMT'>Getting Available Formats</h2>";
 
     $youtube_id = youtube_id_from_url($_POST["youtube_url"]);
-    if ( ! $youtube_id )
+    $str_sql = "SELECT count(*) rec_count FROM tbl_songs where youtube_id = '" . $youtube_id . "';";
+    
+    $qry_playing = $conn->query($str_sql);
+    $row = $qry_playing->fetch_assoc();
+    
+    if ( $row["rec_count"] > 0 )
+    {
+        echo "<h2 style='color:red'>Error! youtube_id already exists</h2>";
+    }
+    elseif ( ! $youtube_id )
     {
         echo "<script>alert('Failed to load! Invalid YouTube ID.');</script>";
     }
