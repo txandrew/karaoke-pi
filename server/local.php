@@ -86,6 +86,7 @@ function sendCmd(str_Command)
 <tr>
 <td width="30%" style="text-align:center">
 <button onclick="sendCmd('PLAYED');"><canvas width=80px height=80px id="icn_P_Play">Play</canvas></button>
+<hr>
 <button onclick="sendCmd('PAUSED');" style="width:48%"><canvas width=50px height=50px id="icn_P_Pause">Pause</canvas></button>
 <button onclick="sendCmd('SKIPPING');" style="width:48%"><canvas width=50px height=50px id="icn_P_Skip">Skip</canvas></button>
 <hr>
@@ -93,9 +94,7 @@ function sendCmd(str_Command)
 <button onclick="location.assign('local.php?CMD=stop')" style="width:48%;font-size:2em;">Off</button>
 <hr>
 <button onclick="location.assign('/')" style="font-size:2.5em;">Home</button>
-<h3><?php echo $str_wireless; ?></h3>
-<hr />
-<h3><?php echo $str_self; ?></h3>
+<h3><?php echo $str_wireless; ?> @ <?php echo $str_self; ?></h3>
 <hr />
 <h3><?php echo $row["status"]; ?></h3>
 </td>
