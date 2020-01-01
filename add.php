@@ -6,6 +6,7 @@ $conn = new mysqli("localhost","kpi-server","karaokepi","karaoke");
 if ( isset($_POST["youtube_url"]) )
 {
     echo "<h2 id='fetchFMT'>Getting Available Formats</h2>";
+    flush();
 
     $youtube_id = youtube_id_from_url($_POST["youtube_url"]);
     $str_sql = "SELECT count(*) rec_count FROM tbl_songs where youtube_id = '" . $youtube_id . "';";
