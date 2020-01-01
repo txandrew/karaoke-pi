@@ -103,8 +103,17 @@ def setNextSong():
     global str_n_youtube
 
     nxt_cur = db.cursor()
-    nxt_cur.execute("select q.youtube_id, q.queued_by, s.title, s.artist, s.song_type from tbl_queue q LEFT JOIN tbl_songs s ON q.youtube_id = s.youtube_id LEFT JOIN qry_last_played l on l.queued_by = q.queued_by ORDER BY last_played, queue_val LIMIT 1;")
-    #nxt_cur.execute("select q.youtube_id, q.queued_by, s.title, s.artist, s.song_type from tbl_queue q LEFT JOIN tbl_songs s ON q.youtube_id = s.youtube_id ORDER BY queue_val LIMIT 1;")
+    #nxt_cur.execute("select q.youtube_id, q.queued_by, s.title, s.artist, s.song_type from tbl_queue q LEFT JOIN tbl_songs s ON q.youtube_id = s.youtube_id LEFT JOIN qry_last_played l on l.queued_by = q.queued_by ORDER BY last_played, queue_val LIMIT 1;")
+    nxt_cur.execute("select
+                        q.youtube_id,
+                        q.queued_by,
+                        s.title,
+                        s.artist,
+                        s.song_type
+                    from tbl_queue q
+                        LEFT JOIN tbl_songs s ON q.youtube_id = s.youtube_id
+                    ORDER BY queue_val
+                    LIMIT 1;")
 
 
     if ( int(nxt_cur.rowcount) > 0 ):

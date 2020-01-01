@@ -51,6 +51,14 @@ function edit_Song(str_ytid)
 {
     location.replace("edit.php?ytid=" + str_ytid);
 }
+function replay_Song(str_ytid,str_title)
+{
+    if ( confirm("Add " + str_title + " to queue?") )
+    {
+        //location.assign("queue.php?youtube_id=" + str_ytid + "&song=" + str_title);
+        window.open("queue.php?youtube_id=" + str_ytid + "&song=" + str_title);
+    }
+}
 function delete_Song(str_ytid)
 {
     if ( confirm("Are you sure you want to delete this song?") )
@@ -113,13 +121,15 @@ if ( ! isset ($_GET["list"]) or $_GET["list"] == "queue" )
     $str_sql = "SELECT * FROM tbl_queue q 
                 INNER JOIN qry_songs_w_ratings s on q.youtube_id = s.youtube_id
                 INNER JOIN tbl_users u on q.queued_by = u.user_id
-                WHERE s.user_id='" . $_SESSION["user_id"] . "' ORDER BY queued_by, queue_val ASC";
+                WHERE s.user_id='" . $_SESSION["user_id"] . "' ORDER BY queue_val ASC";
 }
 elseif ( $_GET["list"] == "history" )
 {
     $str_hist  = " class='active' ";
     $str_page  = "history";
-    $str_sql = "SELECT * FROM tbl_history q INNER JOIN qry_songs_w_ratings s on q.youtube_id = s.youtube_id
+    $str_sql = "SELECT * FROM tbl_history q 
+                INNER JOIN qry_songs_w_ratings s on q.youtube_id = s.youtube_id
+                INNER JOIN tbl_users u on q.queued_by = u.user_id
                 WHERE s.user_id='" . $_SESSION["user_id"] . "' ORDER BY played DESC";
 }
 elseif ( $_GET["list"] == "downloading" )
@@ -171,6 +181,7 @@ echo "<br /><br />";
 
 if ( $qry_songs->num_rows > 0 )
 {
+    
     while ( $rec_song = $qry_songs->fetch_assoc()) 
     {
         echo "\n\n";
@@ -196,7 +207,7 @@ if ( $qry_songs->num_rows > 0 )
         }
         echo "</td></tr>";
 
-        if ( $str_page == "queue" )
+        if ( $str_page == "queue" or $str_page == "history" )
         {
             echo "<tr><td colspan=2 style='text-align:center;font-weight:700;color:#" . $rec_song["color"];
             echo "'>Queued by " . $rec_song["queued_by"] . "</span>\n";
@@ -218,10 +229,9 @@ if ( $qry_songs->num_rows > 0 )
         }
         else
         {
-            echo "<tr><td style='text-align:left;font-weight:700' onclick='edit_Song(\"" . $rec_song["youtube_id"];
-            echo "\")' >Edit Song</td>";
-            echo "<td style='text-align:right;font-weight:700' onclick='delete_Song(\"" . $rec_song["youtube_id"];
-            echo "\")' >Delete Song</td></tr>";
+            echo "<tr><td width='33%' style='text-align:left;font-weight:700'   onclick='edit_Song(\"" . $rec_song["youtube_id"] . "\")' >Edit Song</td>";
+            echo "    <td width='33%' style='text-align:center;font-weight:700' onclick='replay_Song(\"" . $rec_song["youtube_id"] . "\", \"" . $rec_song["title"] . "\")' >Queue</td>";
+            echo "    <td width='33%' style='text-align:right;font-weight:700'  onclick='delete_Song(\"" . $rec_song["youtube_id"] . "\")' >Delete Song</td></tr>";
         }
         
         echo "</table></button><br /><br />\n";
