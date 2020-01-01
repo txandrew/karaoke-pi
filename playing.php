@@ -2,10 +2,11 @@
 include "header.php";
 
 $conn = new mysqli("localhost","kpi-server","karaokepi","karaoke");
-$str_sql = "select count(*) queue_size from tbl_queue";
+$str_sql = "select count(*) queue_size, sum(if(queued_by = '" . $_SESSION["user_id"] . "',1,0)) my_queue from tbl_queue";
 $qry_queue_sz = $conn->query($str_sql);
 $row = $qry_queue_sz->fetch_assoc();
 $int_queue_sz = $row["queue_size"];
+$int_my_queue_sz = $row["my_queue"];
 
 $str_sql = "
     select
@@ -100,6 +101,7 @@ function draw_Ratings()
 ?>
 <h2><?php echo $row["genre"]; ?></h2>
 <h2><?php echo $row["queued_by"]; ?></h2>
+<h2>Songs I Have in Queue: <?php echo $int_my_queue_sz; ?></h2>
 <h2>Songs in Queue: <?php echo $int_queue_sz; ?></h2>
 <br /><br />
 <script>
