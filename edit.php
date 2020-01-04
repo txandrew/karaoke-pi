@@ -6,10 +6,10 @@ $conn = new mysqli("localhost","kpi-server","karaokepi","karaoke");
 if ( isset($_POST["youtube_id"]) )
 {
     $str_sql = "UPDATE tbl_songs SET " .
-        "title      = '" . $_POST['title'] . "', " .
-        "artist     = '" . $_POST['artist'] . "', " .
-        "genre      = '" . $_POST['genre'] . "', " .
-        "song_type  = '" . $_POST['song_type'] . "' WHERE " .
+        "title      = '" . $conn->real_escape_string($_POST['title']) . "', " .
+        "artist     = '" . $conn->real_escape_string($_POST['artist']) . "', " .
+        "genre      = '" . $conn->real_escape_string($_POST['genre']) . "', " .
+        "song_type  = '" . $conn->real_escape_string($_POST['song_type']) . "' WHERE " .
         "youtube_id = '" . $_POST['youtube_id'] . "';";
 
     $qry_update = $conn->query($str_sql);

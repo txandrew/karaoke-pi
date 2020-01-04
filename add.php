@@ -27,11 +27,11 @@ if ( isset($_POST["youtube_url"]) )
         exec("youtube-dl -F " . $youtube_id, $arr_output);
 
         $_SESSION["youtube_id"]   = $youtube_id;
-        $_SESSION["title"]        = $_POST["title"];
-        $_SESSION["artist"]       = $_POST["artist"];
-        $_SESSION["genre"]        = $_POST["genre"];
-        $_SESSION["song_type"]    = $_POST["song_type"];
-        $_SESSION["added_by"]     = $_POST["added_by"];
+        $_SESSION["title"]        = $conn->real_escape_string($_POST["title"]);
+        $_SESSION["artist"]       = $conn->real_escape_string($_POST["artist"]);
+        $_SESSION["genre"]        = $conn->real_escape_string($_POST["genre"]);
+        $_SESSION["song_type"]    = $conn->real_escape_string($_POST["song_type"]);
+        $_SESSION["added_by"]     = $conn->real_escape_string($_POST["added_by"]);
 
         foreach( $arr_output as $str_f_line )
         {
