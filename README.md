@@ -9,7 +9,6 @@ The Karaoke-Pi downloads youtube videos and stores them on a raspberry pi, which
 4. OMX Player
 ## To Do
 The following is a list of improvements/bugs that need to be applied.
-1. Clean Text Input When Adding Songs
-2. Add Delay Screens 
-3. Add Player as a Service
-4. Add PIP Installer
+1. Add Delay Screens 
+2. Add Player as a Service
+3. Add PIP Installer
